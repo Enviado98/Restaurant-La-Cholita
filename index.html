@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO & META -->
+    <title>Restaurant La Cholita | Sabor Peruano en Mejillones</title>
+    <meta name="description" content="Auténtica gastronomía peruana en Mejillones. Ceviches, Pescados y la mejor sopa levanta muertos. Av. San Martín 846.">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Rye&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- Iconos -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Lato', 'sans-serif'],
+                        display: ['Rye', 'serif'],
+                    },
+                    colors: {
+                        'cholo-red': '#B71C1C',    /* Rojo Intenso (Paredes) */
+                        'cholo-dark': '#3E2723',   /* Madera Oscura */
+                        'cholo-gold': '#FFC107',   /* Dorado Andino */
+                        'cholo-bg': '#FFF8E1',     /* Crema Suave */
+                    },
+                    backgroundImage: {
+                        'textile': "url('https://www.transparenttextures.com/patterns/woven.png')",
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 1s ease-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Fondo Hero: Ambiente Rústico y Comida */
+        .hero-bg {
+            background-image: linear-gradient(to bottom, rgba(62, 39, 35, 0.7), rgba(183, 28, 28, 0.6)), url('https://images.unsplash.com/photo-1535399831218-d5bd36d1a6b3?q=80&w=1920');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        /* Glassmorphism Andino */
+        .glass-andean {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            border: 2px solid #5D4037;
+            box-shadow: 10px 10px 0px rgba(62, 39, 35, 1); /* Sombra dura rústica */
+        }
+
+        /* Franja de Aguayo (Colores del menú) */
+        .aguayo-border {
+            height: 6px;
+            width: 100%;
+            background: linear-gradient(90deg, 
+                #D32F2F 0%, #D32F2F 20%, 
+                #388E3C 20%, #388E3C 40%, 
+                #FBC02D 40%, #FBC02D 60%, 
+                #1976D2 60%, #1976D2 80%, 
+                #000000 80%, #000000 100%);
+        }
+
+        /* Acordeón */
+        .accordion-content {
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .accordion-content.active {
+            max-height: 500px;
+            opacity: 1;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Botón Rústico */
+        .btn-rustic {
+            background-color: #B71C1C;
+            color: white;
+            border: 2px solid #3E2723;
+            transition: all 0.3s;
+        }
+        .btn-rustic:hover {
+            background-color: #3E2723;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body class="bg-cholo-bg text-cholo-dark antialiased selection:bg-cholo-red selection:text-white">
+
+    <!-- NAVBAR -->
+    <nav class="fixed w-full z-50 top-0 bg-cholo-red shadow-lg py-0 border-b-4 border-cholo-dark">
+        <!-- Franja decorativa superior -->
+        <div class="aguayo-border"></div>
+        
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center border-2 border-cholo-dark shadow-sm">
+                    <i class="ph-fill ph-bowl-food text-2xl text-cholo-red"></i>
+                </div>
+                <div>
+                    <h1 class="font-display text-xl text-white tracking-widest leading-none drop-shadow-md">LA CHOLITA</h1>
+                    <p class="font-sans text-[10px] text-cholo-gold font-bold uppercase tracking-widest">Mejillones, Chile</p>
+                </div>
+            </a>
+
+            <!-- Botones -->
+            <div class="flex items-center gap-4">
+                <button onclick="toggleLanguage()" class="hidden md:flex items-center gap-1 bg-cholo-dark/20 border border-white/30 px-3 py-1 rounded text-xs font-bold text-white hover:bg-white hover:text-cholo-red transition-colors">
+                    <i class="ph-bold ph-globe"></i> <span id="lang-text">ES</span>
+                </button>
+                
+                <a href="https://wa.me/56961501830" class="bg-cholo-gold text-cholo-dark px-5 py-2 rounded font-bold shadow-lg flex items-center gap-2 text-sm hover:bg-white transition-colors border border-cholo-dark">
+                    <i class="ph-bold ph-calendar-check"></i> 
+                    <span class="lang" data-es="Reservar" data-en="Reserve">Reservar</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="hero-bg min-h-screen flex items-center justify-center relative pt-28 pb-12">
+        <div class="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
+            
+            <!-- Texto Principal -->
+            <div class="text-center lg:text-left reveal active">
+                <div class="inline-flex items-center gap-2 bg-cholo-gold border-2 border-cholo-dark text-cholo-dark px-4 py-1.5 rounded font-bold uppercase tracking-widest mb-6 shadow-[4px_4px_0px_rgba(0,0,0,1)] transform -rotate-2">
+                    <i class="ph-fill ph-pepper"></i> <span class="lang" data-es="Sazón Peruana" data-en="Peruvian Seasoning">Sazón Peruana</span>
+                </div>
+                
+                <h1 class="font-display text-5xl md:text-7xl text-white mb-6 leading-tight drop-shadow-xl">
+                    <span class="lang" data-es="Tradición &" data-en="Tradition &">Tradición &</span> <br>
+                    <span class="text-cholo-gold">
+                        <span class="lang" data-es="Buen Gusto" data-en="Good Taste">Buen Gusto</span>
+                    </span>
+                </h1>
+                
+                <p class="text-lg text-gray-200 mb-10 font-sans font-medium leading-relaxed max-w-lg mx-auto lg:mx-0 lang" 
+                   data-es="Disfruta de los mejores ceviches, pescados fritos y nuestra famosa 'Sopa Levanta Muertos' en un ambiente rústico y acogedor."
+                   data-en="Enjoy the best ceviches, fried fish and our famous 'Raise the Dead Soup' in a rustic and cozy atmosphere.">
+                   Disfruta de los mejores ceviches, pescados fritos y nuestra famosa 'Sopa Levanta Muertos' en un ambiente rústico y acogedor.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                    <a href="#menu" class="bg-white text-cholo-red border-2 border-cholo-red px-8 py-3 rounded font-bold shadow-xl transition-all flex items-center justify-center gap-2 uppercase tracking-wide text-sm hover:bg-cholo-bg">
+                        <i class="ph-bold ph-book-open"></i> <span class="lang" data-es="Ver Carta" data-en="View Menu">Ver Carta</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- PANEL DE HORARIOS (Lógica Específica) -->
+            <div class="relative z-10 reveal active delay-100 w-full max-w-md mx-auto">
+                <div class="glass-andean rounded overflow-hidden">
+                    <div class="aguayo-border"></div>
+                    
+                    <!-- Cabecera Clickable -->
+                    <div class="bg-cholo-bg p-6 flex items-center justify-between cursor-pointer hover:bg-white transition-colors border-b border-gray-300" onclick="toggleHours()">
+                        <div class="flex items-center gap-4">
+                            <!-- Indicador Luz -->
+                            <div class="relative">
+                                <div id="status-light" class="w-4 h-4 rounded-full bg-gray-400 border border-gray-500"></div>
+                                <div id="status-ping" class="absolute top-0 left-0 w-4 h-4 rounded-full bg-gray-400 animate-ping opacity-75 hidden"></div>
+                            </div>
+                            <div>
+                                <h3 id="status-text" class="font-display text-xl text-cholo-dark">...</h3>
+                                <p class="text-[10px] text-gray-500 font-bold tracking-widest uppercase lang" data-es="Estado Actual" data-en="Current Status">Estado Actual</p>
+                            </div>
+                        </div>
+                        <div class="bg-cholo-red/10 p-2 rounded text-cholo-red">
+                            <i id="chevron" class="ph-bold ph-caret-down text-xl transition-transform duration-300"></i>
+                        </div>
+                    </div>
+
+                    <!-- Lista Desplegable -->
+                    <div id="hours-list" class="accordion-content bg-white text-cholo-dark font-sans">
+                        <div class="p-6 space-y-3">
+                            <div class="flex justify-between items-center border-b border-dashed border-gray-300 pb-2">
+                                <span class="font-bold text-gray-600 lang" data-es="Miér - Lun" data-en="Wed - Mon">Miér - Lun</span>
+                                <span class="font-bold text-white bg-cholo-red px-3 py-0.5 rounded-full text-xs">12:30 - 18:00</span>
+                            </div>
+                            <div class="flex justify-between items-center text-gray-500">
+                                <span class="font-bold lang" data-es="Martes" data-en="Tuesday">Martes</span>
+                                <span class="uppercase text-xs font-bold border border-cholo-red text-cholo-red px-2 py-0.5 rounded">Cerrado</span>
+                            </div>
+                            
+                            <div class="mt-4 pt-3 text-center border-t border-gray-200">
+                                <a href="https://maps.google.com/?q=Av.+San+Martín+846,+Mejillones" target="_blank" class="text-xs font-bold text-cholo-dark hover:text-cholo-red flex items-center justify-center gap-1 uppercase tracking-widest transition-colors">
+                                    <i class="ph-fill ph-map-pin text-cholo-gold"></i> Av. San Martín 846, Mejillones
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MENÚ DESTACADO -->
+    <section id="menu" class="py-24 bg-cholo-bg relative">
+        <div class="absolute inset-0 bg-textile opacity-5 pointer-events-none"></div>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-16 reveal">
+                <span class="text-cholo-red font-bold tracking-widest uppercase text-xs mb-2 block font-sans lang" data-es="Los Favoritos" data-en="The Favorites">Los Favoritos</span>
+                <h2 class="font-display text-4xl md:text-5xl text-cholo-dark mb-4">
+                    <span class="lang" data-es="Nuestras Especialidades" data-en="Our Specialties">Nuestras Especialidades</span>
+                </h2>
+                <div class="w-24 h-2 bg-cholo-dark mx-auto"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- 1. CEVICHE LA CHOLITA -->
+                <div class="bg-white border-2 border-cholo-dark shadow-[8px_8px_0px_rgba(183,28,28,0.2)] hover:shadow-[8px_8px_0px_rgba(183,28,28,1)] transition-all duration-300 group reveal overflow-hidden">
+                    <div class="aguayo-border"></div>
+                    <div class="h-60 overflow-hidden relative">
+                         <div class="absolute top-4 left-4 bg-cholo-gold text-cholo-dark font-bold px-3 py-1 border border-cholo-dark text-xs z-10 shadow-md transform -rotate-3">Signature</div>
+                        <img src="https://images.unsplash.com/photo-1535399831218-d5bd36d1a6b3?q=80&w=600" alt="Ceviche" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6 relative">
+                        <h3 class="font-display text-2xl text-cholo-dark mb-2">Ceviche La Cholita</h3>
+                        <p class="text-sm text-gray-600 leading-relaxed mb-4 lang" data-es="Pescado del día bañado en nuestra crema cholita especial, camote, choclo y toque de rocoto." data-en="Catch of the day bathed in our special cholita cream, sweet potato, corn and a touch of rocoto.">Pescado del día bañado en nuestra crema cholita especial, camote, choclo y toque de rocoto.</p>
+                        <div class="flex justify-between items-center border-t border-dashed border-gray-300 pt-4">
+                            <span class="text-cholo-red font-bold font-display text-xl">$8.500</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. ALBACORA A LO MACHO -->
+                <div class="bg-white border-2 border-cholo-dark shadow-[8px_8px_0px_rgba(255,193,7,0.4)] hover:shadow-[8px_8px_0px_rgba(255,193,7,1)] transition-all duration-300 group reveal delay-100 overflow-hidden">
+                    <div class="aguayo-border"></div>
+                    <div class="h-60 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1621841957884-f20065418105?q=80&w=600" alt="Albacora" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6 relative">
+                        <h3 class="font-display text-2xl text-cholo-dark mb-2">Albacora a lo Macho</h3>
+                        <p class="text-sm text-gray-600 leading-relaxed mb-4 lang" data-es="Medallón de albacora a la plancha bañado en salsa de mariscos, con un toque de ají amarillo." data-en="Grilled albacore medallion bathed in seafood sauce, with a touch of yellow chili.">Medallón de albacora a la plancha bañado en salsa de mariscos, con un toque de ají amarillo.</p>
+                        <div class="flex justify-between items-center border-t border-dashed border-gray-300 pt-4">
+                            <span class="text-cholo-red font-bold font-display text-xl">$9.000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. PARIHUELA (SOPA) -->
+                <div class="bg-white border-2 border-cholo-dark shadow-[8px_8px_0px_rgba(25,118,210,0.2)] hover:shadow-[8px_8px_0px_rgba(25,118,210,1)] transition-all duration-300 group reveal delay-200 overflow-hidden">
+                    <div class="aguayo-border"></div>
+                    <div class="h-60 overflow-hidden relative">
+                         <div class="absolute top-4 left-4 bg-cholo-dark text-white font-bold px-3 py-1 border border-white text-xs z-10 shadow-md">Potente</div>
+                        <img src="https://images.unsplash.com/photo-1547592166-23acbe346499?q=80&w=600" alt="Sopa" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6 relative">
+                        <h3 class="font-display text-2xl text-cholo-dark mb-2">Parihuela La Cholita</h3>
+                        <p class="text-sm text-gray-600 leading-relaxed mb-4 lang" data-es="La famosa 'Levanta Muertos'. Trozos de pescado y mariscos sudados en su propio chilcano." data-en="The famous 'Dead Raiser'. Pieces of fish and seafood steamed in their own broth.">La famosa "Levanta Muertos". Trozos de pescado y mariscos sudados en su propio chilcano.</p>
+                        <div class="flex justify-between items-center border-t border-dashed border-gray-300 pt-4">
+                            <span class="text-cholo-red font-bold font-display text-xl">$8.500</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
+             <div class="mt-12 text-center">
+                <a href="https://wa.me/56961501830?text=Hola,%20quiero%20ver%20la%20carta%20completa." class="inline-flex items-center gap-2 text-cholo-dark font-bold hover:text-cholo-red transition-colors border-b-2 border-cholo-red pb-1">
+                    <i class="ph-bold ph-list-dashes"></i> <span class="lang" data-es="Consultar Menú Completo" data-en="See Full Menu">Consultar Menú Completo</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-cholo-dark text-white pt-16 pb-12 border-t-8 border-cholo-red">
+        <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+            
+            <div class="text-center md:text-left">
+                <div class="flex items-center justify-center md:justify-start gap-3 mb-6">
+                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center border-2 border-cholo-red">
+                        <i class="ph-fill ph-bowl-food text-2xl text-cholo-dark"></i>
+                    </div>
+                    <h3 class="font-display text-3xl text-white">LA CHOLITA</h3>
+                </div>
+                
+                <div class="space-y-4 text-gray-300 text-sm font-sans">
+                    <a href="https://maps.google.com/?q=Av.+San+Martín+846,+Mejillones" target="_blank" class="flex items-center justify-center md:justify-start gap-3 hover:text-white transition-colors">
+                        <i class="ph-fill ph-map-pin text-cholo-gold text-lg"></i>
+                        Av. San Martín 846, Mejillones, Antofagasta
+                    </a>
+                    <a href="tel:+56961501830" class="flex items-center justify-center md:justify-start gap-3 hover:text-white transition-colors">
+                        <i class="ph-fill ph-phone text-cholo-gold text-lg"></i>
+                        +56 9 6150 1830
+                    </a>
+                     <div class="flex items-start justify-center md:justify-start gap-3">
+                         <i class="ph-fill ph-clock text-cholo-gold text-lg"></i>
+                         <div>
+                             <p class="lang" data-es="Miér-Lun: 12:30 - 18:00" data-en="Wed-Mon: 12:30 - 18:00">Miér-Lun: 12:30 - 18:00</p>
+                             <p class="text-cholo-red text-xs font-bold mt-1 lang" data-es="MARTES CERRADO" data-en="TUESDAY CLOSED">MARTES CERRADO</p>
+                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mapa Estático -->
+            <div class="rounded-lg overflow-hidden h-60 border-2 border-white/20 relative shadow-2xl sepia hover:sepia-0 transition-all duration-500">
+                 <iframe 
+                    src="https://maps.google.com/maps?q=Av.+San+Martín+846,+Mejillones,+Antofagasta&t=&z=16&ie=UTF8&iwloc=&output=embed" 
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                 </iframe>
+            </div>
+
+        </div>
+        <div class="text-center mt-12 text-xs text-gray-500 uppercase tracking-widest font-bold">
+            &copy; 2026 La Cholita. <span class="text-cholo-red">❤</span> Mejillones.
+        </div>
+    </footer>
+
+    <!-- BOTONES FLOTANTES -->
+    <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-4 items-end">
+        
+        <!-- Botón Llamar (Solo Móvil) -->
+        <a href="tel:+56961501830" class="md:hidden w-14 h-14 bg-white text-cholo-dark rounded-full shadow-lg flex items-center justify-center border-2 border-cholo-gold hover:scale-110 transition-transform duration-300">
+            <i class="ph-fill ph-phone-call text-2xl animate-pulse text-cholo-red"></i>
+        </a>
+
+        <!-- Botón WhatsApp (Principal) -->
+        <a href="https://wa.me/56961501830?text=Hola%20La%20Cholita,%20quiero%20reservar." target="_blank" class="group relative w-16 h-16 bg-[#25D366] text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform duration-300 hover:shadow-[0_0_20px_rgba(37,211,102,0.4)] border-4 border-white">
+            <i class="ph-fill ph-whatsapp-logo text-3xl"></i>
+            
+            <!-- Tooltip -->
+            <span class="absolute right-full mr-4 bg-cholo-dark text-white border border-cholo-gold px-4 py-2 rounded text-xs font-bold shadow-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none hidden md:block uppercase tracking-wide">
+                <span class="lang" data-es="¡Reserva Ya!" data-en="Book Now!">¡Reserva Ya!</span>
+            </span>
+        </a>
+    </div>
+
+    <!-- LÓGICA -->
+    <script>
+        // 1. SCROLL REVEAL
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+
+        // 2. TOGGLE HORARIOS
+        function toggleHours() {
+            const list = document.getElementById('hours-list');
+            const chevron = document.getElementById('chevron');
+            list.classList.toggle('active');
+            
+            if (list.classList.contains('active')) {
+                chevron.style.transform = 'rotate(180deg)';
+            } else {
+                chevron.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // 3. LOGICA HORARIOS (Miér-Lun 12:30-18:00, Martes Cerrado)
+        function checkStatus() {
+            try {
+                // Zona Horaria Chile: America/Santiago
+                const now = new Date();
+                const formatter = new Intl.DateTimeFormat('en-US', {
+                    timeZone: 'America/Santiago',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    weekday: 'short',
+                    hour12: false
+                });
+
+                const parts = formatter.formatToParts(now);
+                const hour = parseInt(parts.find(p => p.type === 'hour').value);
+                const minute = parseInt(parts.find(p => p.type === 'minute').value);
+                const day = parts.find(p => p.type === 'weekday').value; 
+                const currentTime = hour + (minute / 60);
+
+                let isOpen = false;
+
+                // Martes Cerrado
+                if (day === 'Tue') {
+                    isOpen = false;
+                } 
+                // Resto de días: 12:30 (12.5) a 18:00
+                else {
+                    if (currentTime >= 12.5 && currentTime < 18) {
+                        isOpen = true;
+                    }
+                }
+
+                const lang = document.getElementById('lang-text').innerText;
+                const light = document.getElementById('status-light');
+                const ping = document.getElementById('status-ping');
+                const text = document.getElementById('status-text');
+
+                if (isOpen) {
+                    light.className = "w-4 h-4 rounded-full bg-green-500 border-2 border-gray-600 shadow-[0_0_15px_rgba(34,197,94,0.8)]";
+                    ping.classList.remove('hidden');
+                    text.innerText = lang === 'ES' ? "ABIERTO" : "OPEN";
+                    text.className = "font-display text-xl text-green-600 tracking-wide";
+                } else {
+                    light.className = "w-4 h-4 rounded-full bg-cholo-red border-2 border-gray-600";
+                    ping.classList.add('hidden');
+                    text.innerText = lang === 'ES' ? "CERRADO" : "CLOSED";
+                    text.className = "font-display text-xl text-cholo-red tracking-wide";
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        // 4. IDIOMA
+        function toggleLanguage() {
+            const btn = document.getElementById('lang-text');
+            const isSpanish = btn.innerText === 'ES';
+            const target = isSpanish ? 'en' : 'es';
+            
+            btn.innerText = isSpanish ? 'EN' : 'ES';
+
+            document.querySelectorAll('.lang').forEach(el => {
+                if (el.dataset[target]) {
+                    el.style.opacity = '0';
+                    setTimeout(() => {
+                        el.innerText = el.dataset[target];
+                        el.style.opacity = '1';
+                    }, 200);
+                }
+            });
+            setTimeout(checkStatus, 200);
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            reveal();
+            checkStatus();
+        });
+        
+        setInterval(checkStatus, 60000);
+    </script>
+</body>
+</html>
